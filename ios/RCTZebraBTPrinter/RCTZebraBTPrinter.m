@@ -58,19 +58,27 @@ RCT_EXPORT_METHOD(
         BOOL success = [thePrinterConn open];
 
         if(success == YES){
+            // set to zpl language
+            NSError *error = nil;
+            [SGD SET:@"device.languages" withValue:@"zpl" andWithPrinterConnection:thePrinterConn error:&error];
+
+            if(error) {
+                NSLog(@"Could not set language %@", error.localizedDescription);
+                [thePrinterConn close];
+                resolve((id)kCFBooleanFalse);
+                
+                return;
+            }
 
 //          NSLog(@"IOS >> Connected %@", userText1);
 
-//          NSString *testLabel = @"^XA^FO100,60^A0N,25,25^FB400,2,10,C,0^FDAlex Kuzmenya. Alex Kuzmenya. long ling 231^FS^XZ";
+//          NSString *testLabel = @"^XA^FO100,60^A0N,25,25^FB400,2,10,C,0^FDTest label ZPL^FS^XZ";
 
             NSString *printLabel;
-            // A label file always begins with the “!” character followed by an “x” offset parameter, “x” and “y” axis resolutions, a label length and finally a quantity of labels to print.
+            
+            printLabel = [NSString stringWithFormat: @"%@", userCommand];
 
-            printLabel = [NSString stringWithFormat: @"! %@", userCommand];
-
-//          NSString *testLabel = @"! 0 200 200 210 1\r\nTEXT 4 0 30 40 This is a CPCL test.\r\nFORM\r\nPRINT\r\n";
-
-            NSError *error = nil;
+            error = nil;
 
             // Send the data to printer as a byte array.
             // NSData *data = [NSData dataWithBytes:[testLabel UTF8String] length:[testLabel length]];
@@ -84,8 +92,15 @@ RCT_EXPORT_METHOD(
 
                     NSLog(@"IOS >> Failed to send");
 
-                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    [errorAlert show];
+                    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:@"Printing Error" message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+
+                    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)];
+
+                    [errorAlert addAction:defaultAction];
+                    [self presentViewController:errorAlert animated:YES completion:nil];
+
+                    //UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    //[errorAlert show];
                     //[errorAlert release];
                 }
             });

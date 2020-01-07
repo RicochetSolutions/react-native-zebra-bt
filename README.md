@@ -1,11 +1,11 @@
 
 # react-native-zebra-bt-printer
 
-This library is built for react native to work with Portable Zebra Bluetooth Printers. This library uses the libraries provided by Zebra. It has been tested with the QLN220, but should work with other QLN series printers that have bluetooth (non BLE mode).
+This library is built for react native to work with Portable Zebra Bluetooth Printers. This library uses the libraries provided by Zebra. It has been tested with the Z400 to send zpl string to the printer.
 
 ## Getting started
 
-`$ npm install https://github.com/stobe1/react-native-zebra-bt`
+`$ npm install https://github.com/RicochetSolutions/react-native-zebra-bt`
 
 ### Mostly automatic installation
 
@@ -43,7 +43,7 @@ API:
 
 | Method        | Description   |
 | ------------- | ------------- |
-| `printLabel(printerSerial, userCommand)`  | Prints data on zebra bt printer. `userCommand` is presented in CPCL printer programming language. Returns a promise with result  |
+| `printLabel(printerSerial, userCommand)`  | Prints data on zebra bt printer. `userCommand` is presented in zpl printer programming language. Returns a promise with result  |
 | `checkPrinterStatus(printerSerial)`  | Checks if printer is ready to print. Returns a promise with result  |
 
 You must pair your printer first with the device.
@@ -74,7 +74,7 @@ const printLabel = async () => {
     const lineSeparator = '\r\n';
     // userCommand is presented in CPCL printer programming language
     // full CPCL programming guide can be found here https://www.zebra.com/content/dam/zebra/manuals/en-us/printer/cpcl-link-os-pg-en.pdf
-    const userCommand = `0 200 200 210 1${lineSeparator}TEXT 4 0 30 40 This is a CPCL test.${lineSeparator}FORM${lineSeparator}PRINT${lineSeparator}`
+    const userCommand = `^XA^FO100,60^A0N,25,25^FB400,2,10,C,0^FD${yourTextVar}^FS^XZ`
 
     ZebraBTPrinter.printLabel(printerSerial, userCommand).then((result) => {
 
