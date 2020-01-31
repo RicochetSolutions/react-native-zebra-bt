@@ -60,7 +60,7 @@ RCT_EXPORT_METHOD(
             [((MfiBtPrinterConnection*)thePrinterConn) setTimeToWaitAfterWriteInMilliseconds:30];
         } else {
             NSString *ipAddress = userPrinterSerial;
-            thePrinterConn = [[[TcpPrinterConnection alloc] initWithAddress:ipAddress andWithPort:TcpPrinterConnection.DEFAULT_ZPL_TCP_PORT] autorelease];
+            thePrinterConn = [[[TcpPrinterConnection alloc] initWithAddress:ipAddress andWithPort:6101] autorelease];
         }
 
         BOOL success = [thePrinterConn open];
@@ -106,10 +106,6 @@ RCT_EXPORT_METHOD(
 
                     [errorAlert addAction:defaultAction];
                     [self presentViewController:errorAlert animated:YES completion:nil];
-
-                    //UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    //[errorAlert show];
-                    //[errorAlert release];
                 }
             });
             // Close the connection to release resources.
