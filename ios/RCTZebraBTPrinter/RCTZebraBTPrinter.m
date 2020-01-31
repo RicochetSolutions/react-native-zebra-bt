@@ -177,14 +177,16 @@ RCT_EXPORT_METHOD(discoverPrinters:
         resolver: (RCTPromiseResolveBlock)resolve
         rejector: (RCTPromiseRejectBlock)reject){
 
-        NSArray *printers = [NetworkDiscoverer localBroadcast:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
+                NSArray *printers = [NetworkDiscoverer localBroadcast:nil];
 
-        if(printers){
-            resolve(printers);
-        } else {
-            NSError *error;
-            reject(@"no_printers_found", @"Printers not found", error);
-        }
+                if(printers){
+                    resolve(printers);
+                } else {
+                    NSError *error;
+                    reject(@"no_printers_found", @"Printers not found", error);
+                }
+            });
 
 }
 
