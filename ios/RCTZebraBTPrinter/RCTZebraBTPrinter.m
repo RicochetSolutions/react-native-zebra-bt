@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE();
     return dispatch_get_main_queue();
 }
 
-#pragma mark - Methods available form Javascript
+#pragma mark - Methods available from Javascript
 
 RCT_EXPORT_METHOD(
     printLabel: (NSString *)userPrinterSerial
@@ -60,7 +60,7 @@ RCT_EXPORT_METHOD(
             [((MfiBtPrinterConnection*)thePrinterConn) setTimeToWaitAfterWriteInMilliseconds:30];
         } else {
             NSString *ipAddress = userPrinterSerial;
-            thePrinterConn = [[[TcpPrinterConnection alloc] initWithAddress:ipAddress andWithPort:6101] autorelease];
+            thePrinterConn = [[TcpPrinterConnection alloc] initWithAddress:ipAddress andWithPort:6101];
         }
 
         BOOL success = [thePrinterConn open];
