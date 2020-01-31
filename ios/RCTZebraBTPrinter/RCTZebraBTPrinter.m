@@ -99,13 +99,7 @@ RCT_EXPORT_METHOD(
                 if (success != YES || error != nil) {
 
                     NSLog(@"IOS >> Failed to send");
-
-                    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:@"Printing Error" message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
-
-                    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)];
-
-                    [errorAlert addAction:defaultAction];
-                    [self presentViewController:errorAlert animated:YES completion:nil];
+                    resolve((id)kCFBooleanFalse);
                 }
             });
             // Close the connection to release resources.
