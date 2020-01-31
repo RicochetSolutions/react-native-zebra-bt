@@ -163,8 +163,7 @@ RCT_EXPORT_METHOD(checkPrinterStatus: (NSString *)serialCode
     });
 }
 
-RCT_EXPORT_METHOD(discoverPrinters:
-        resolver: (RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(discoverPrinters: (RCTPromiseResolveBlock)resolve
         rejector: (RCTPromiseRejectBlock)reject){
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
